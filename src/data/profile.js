@@ -1,3 +1,5 @@
+const assetBase = import.meta.env.BASE_URL;
+
 export const profile = {
   name: 'Ahmed T. Ali',
   title: 'Ph.D. Student in Industrial & Systems Engineering',
@@ -8,8 +10,8 @@ export const profile = {
   phoneHref: '+17865386337',
   linkedin: 'https://www.linkedin.com/in/ahmed-talaat-4219a1116',
   googleScholar: 'https://scholar.google.com/citations?hl=en&user=UKJs3qMAAAAJ',
-  cvPath: '/ahmed-t-ali-cv.pdf',
-  headshotPath: '/ahmed-t-ali-headshot.jpeg',
+  cvPath: `${assetBase}ahmed-t-ali-cv.pdf`,
+  headshotPath: `${assetBase}ahmed-t-ali-headshot.jpeg`,
   summary:
     'Early-career researcher and teaching assistant working at the intersection of operations research, optimization, machine learning, and applied data analytics for complex industrial and infrastructure systems.',
   currentFocus:
