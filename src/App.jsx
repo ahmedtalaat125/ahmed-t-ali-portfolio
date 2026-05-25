@@ -438,13 +438,15 @@ function ContactSection() {
   const [errors, setErrors] = useState({});
   const [isSending, setIsSending] = useState(false);
   const [isSent, setIsSent] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((current) => ({ ...current, [name]: value }));
     if (errors[name]) {
-      setErrors({ ...errors, [name]: null });
+      setErrors((current) => ({ ...current, [name]: null }));
     }
+    if (submitError) setSubmitError('');
   };
 
   const validate = () => {
@@ -460,18 +462,45 @@ function ContactSection() {
     return Object.keys(tempErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmitError('');
+    setIsSent(false);
     if (!validate()) return;
     
     setIsSending(true);
-    // Simulate sending message
-    setTimeout(() => {
-      setIsSending(false);
+
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          access_key: profile.contactFormAccessKey,
+          subject: 'New message from Ahmed T. Ali portfolio',
+          from_name: 'Ahmed T. Ali Portfolio',
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          message: formData.message.trim(),
+          botcheck: false,
+        }),
+      });
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || 'Message delivery failed. Please email me directly.');
+      }
+
       setIsSent(true);
       setFormData({ name: '', email: '', message: '' });
       setTimeout(() => setIsSent(false), 5000);
-    }, 1500);
+    } catch (error) {
+      setSubmitError(error.message || 'Message could not be sent. Please email me directly.');
+    } finally {
+      setIsSending(false);
+    }
   };
 
   return (
@@ -554,6 +583,11 @@ function ContactSection() {
                 </>
               )}
             </button>
+            {submitError && (
+              <p role="alert" className="font-mono text-[0.68rem] uppercase tracking-[0.12em] text-red-400">
+                {submitError}
+              </p>
+            )}
           </form>
         </div>
 
