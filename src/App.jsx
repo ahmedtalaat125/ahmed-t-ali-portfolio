@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import {
   Award,
   BookOpen,
-  Download,
   GraduationCap,
   Linkedin,
   Mail,
@@ -34,150 +33,8 @@ import {
   taughtCourses,
 } from './data/profile';
 
-// Animated Systems Nodes Graphic representing Optimization and Operations Research
-function SystemsNodesGraphic() {
-  return (
-    <div className="relative w-full aspect-[4/5] flex items-center justify-center border border-line/60 bg-panel/30 backdrop-blur-md overflow-hidden p-6 rounded-none">
-      <div className="absolute inset-0 bg-gradient-to-tr from-accent/5 via-transparent to-tealAccent/5" />
-      
-      {/* Optimization Mesh Blueprint Grid background */}
-      <div className="absolute inset-0 surface-line opacity-60" />
-
-      {/* Animated network nodes */}
-      <svg className="w-full h-full relative z-10" viewBox="0 0 320 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="gradient-line-1" x1="50" y1="80" x2="160" y2="160" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#4F7CFF" stopOpacity="0.8" />
-            <stop offset="100%" stopColor="#14B8A6" stopOpacity="0.2" />
-          </linearGradient>
-          <linearGradient id="gradient-line-2" x1="160" y1="160" x2="270" y2="240" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#14B8A6" stopOpacity="0.8" />
-            <stop offset="100%" stopColor="#8B5CF6" stopOpacity="0.2" />
-          </linearGradient>
-          <linearGradient id="glow-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#4F7CFF" />
-            <stop offset="100%" stopColor="#14B8A6" />
-          </linearGradient>
-        </defs>
-
-        {/* Connections / Flow Paths */}
-        <motion.path 
-          d="M 60 100 L 160 180" 
-          stroke="url(#gradient-line-1)" 
-          strokeWidth="2.5" 
-          strokeDasharray="6,4"
-          animate={{ strokeDashoffset: [-20, 0] }}
-          transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
-        />
-        <motion.path 
-          d="M 60 220 L 160 180" 
-          stroke="#343434" 
-          strokeWidth="2" 
-        />
-        <motion.path 
-          d="M 160 180 L 260 120" 
-          stroke="url(#gradient-line-2)" 
-          strokeWidth="2.5"
-          strokeDasharray="8,4"
-          animate={{ strokeDashoffset: [24, 0] }}
-          transition={{ repeat: Infinity, duration: 4, ease: "linear" }}
-        />
-        <motion.path 
-          d="M 160 180 L 260 280" 
-          stroke="#4F7CFF" 
-          strokeWidth="1.5" 
-          strokeOpacity="0.4"
-        />
-        <motion.path 
-          d="M 60 100 L 60 220" 
-          stroke="#343434" 
-          strokeWidth="1.5" 
-        />
-        <motion.path 
-          d="M 260 120 L 260 280" 
-          stroke="#343434" 
-          strokeWidth="1.5" 
-        />
-
-        {/* Flow particles along paths */}
-        <motion.circle r="4" fill="#14B8A6">
-          <animateMotion 
-            path="M 60 100 L 160 180" 
-            dur="3s" 
-            repeatCount="indefinite" 
-            rotate="auto"
-          />
-        </motion.circle>
-        
-        <motion.circle r="4" fill="#8B5CF6">
-          <animateMotion 
-            path="M 160 180 L 260 120" 
-            dur="4s" 
-            repeatCount="indefinite" 
-            rotate="auto"
-          />
-        </motion.circle>
-
-        {/* Nodes */}
-        {/* Node 1 (Source A) */}
-        <motion.circle 
-          cx="60" cy="100" r="8" fill="#1A1A1A" stroke="#4F7CFF" strokeWidth="3"
-          whileHover={{ scale: 1.3 }}
-        />
-        <text x="60" y="80" fill="#A3A3A3" fontSize="9" fontFamily="monospace" textAnchor="middle">SRC_A (Supply)</text>
-
-        {/* Node 2 (Source B) */}
-        <motion.circle 
-          cx="60" cy="220" r="8" fill="#1A1A1A" stroke="#343434" strokeWidth="3"
-          whileHover={{ scale: 1.3 }}
-        />
-        <text x="60" y="245" fill="#A3A3A3" fontSize="9" fontFamily="monospace" textAnchor="middle">SRC_B</text>
-
-        {/* Node 3 (Optimization Hub / Transshipment) */}
-        <motion.circle 
-          cx="160" cy="180" r="12" fill="#1A1A1A" stroke="url(#glow-grad)" strokeWidth="4"
-          animate={{ strokeWidth: [3, 5, 3] }}
-          transition={{ repeat: Infinity, duration: 2 }}
-          whileHover={{ scale: 1.2 }}
-        />
-        <text x="160" y="155" fill="#F8F9FA" fontSize="10" fontWeight="bold" fontFamily="monospace" textAnchor="middle">HUB_OPT</text>
-
-        {/* Node 4 (Sink A) */}
-        <motion.circle 
-          cx="260" cy="120" r="8" fill="#1A1A1A" stroke="#14B8A6" strokeWidth="3"
-          whileHover={{ scale: 1.3 }}
-        />
-        <text x="260" y="100" fill="#A3A3A3" fontSize="9" fontFamily="monospace" textAnchor="middle">SNK_A (Demand)</text>
-
-        {/* Node 5 (Sink B) */}
-        <motion.circle 
-          cx="260" cy="280" r="8" fill="#1A1A1A" stroke="#8B5CF6" strokeWidth="3"
-          whileHover={{ scale: 1.3 }}
-        />
-        <text x="260" y="305" fill="#A3A3A3" fontSize="9" fontFamily="monospace" textAnchor="middle">SNK_B (Grid)</text>
-
-        {/* Overlay network statistics mock */}
-        <foreignObject x="20" y="340" width="280" height="50">
-          <div className="flex justify-between border-t border-line/60 pt-3 text-[0.62rem] font-mono text-ash">
-            <div>
-              <span className="text-tealAccent">&bull;</span> OPTIMAL FLOW: <span className="text-offwhite">ACTIVE</span>
-            </div>
-            <div>
-              EFFICENCY: <span className="text-offwhite">98.4%</span>
-            </div>
-            <div>
-              BOUND: <span className="text-offwhite">GAP 0.0%</span>
-            </div>
-          </div>
-        </foreignObject>
-      </svg>
-    </div>
-  );
-}
-
 function Hero() {
   const heroMetrics = [
-    ['4.0', 'Ph.D. CGPA'],
     ['2', 'Journal Articles'],
     ['EEP', 'Energy Practitioner'],
   ];
@@ -215,7 +72,7 @@ function Hero() {
           <p className="mt-6 max-w-2xl text-base leading-8 text-ash font-medium">{profile.summary}</p>
           
           {/* Key Metrics block */}
-          <div className="mt-9 grid max-w-2xl border border-line/60 bg-panel/30 backdrop-blur-md grid-cols-3 divide-x divide-line/60">
+          <div className="mt-9 grid max-w-2xl grid-cols-2 border border-line/60 bg-panel/30 backdrop-blur-md divide-x divide-line/60">
             {heroMetrics.map(([value, label]) => (
               <div key={label} className="p-4 text-center sm:text-left sm:p-5">
                 <p className="font-serif text-3.5xl font-extrabold leading-none text-gradient-accent sm:text-4xl">{value}</p>
@@ -225,14 +82,6 @@ function Hero() {
           </div>
 
           <div className="mt-10 flex flex-col gap-3.5 sm:flex-row sm:flex-wrap">
-            <a
-              href={profile.cvPath}
-              download
-              className="inline-flex items-center justify-center gap-2 border border-accent bg-accent/90 px-6 py-3.5 font-mono text-xs font-bold uppercase tracking-[0.14em] text-offwhite transition duration-300 hover:-translate-y-0.5 hover:bg-transparent hover:text-accent hover:shadow-accent-glow"
-            >
-              <Download className="h-4.5 w-4.5" aria-hidden="true" />
-              Download CV
-            </a>
             <a
               href={profile.linkedin}
               target="_blank"
@@ -263,16 +112,25 @@ function Hero() {
           </div>
         </motion.div>
 
-        {/* Visual Graphic Representation */}
+        {/* Professional headshot */}
         <motion.div
-          className="relative mx-auto w-full max-w-sm lg:max-w-md hidden sm:block"
+          className="relative mx-auto w-full max-w-sm lg:max-w-md"
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.65, ease: 'easeOut', delay: 0.15 }}
         >
           <div className="absolute -left-6 -top-6 h-20 w-20 border-l border-t border-accent/60" aria-hidden="true" />
           <div className="absolute -bottom-6 -right-6 h-20 w-20 border-b border-r border-tealAccent/60" aria-hidden="true" />
-          <SystemsNodesGraphic />
+          <div className="edge-sheen border border-line/60 bg-panel/30 p-3 backdrop-blur-md">
+            <img
+              src={profile.headshotPath}
+              alt={`${profile.name} professional headshot`}
+              className="relative z-10 aspect-[4/5] w-full border border-line/60 object-cover object-top grayscale-[8%] contrast-[1.04]"
+            />
+          </div>
+          <p className="mt-4 border border-line/60 bg-graphite/60 px-4 py-3 font-mono text-xs uppercase tracking-[0.16em] text-ash">
+            Ph.D. researcher / Teaching assistant / Applied optimization
+          </p>
         </motion.div>
       </div>
     </section>
@@ -747,14 +605,6 @@ function ContactSection() {
           </div>
 
           <div className="mt-8 pt-6 border-t border-line/60 flex flex-wrap gap-2.5">
-            <a
-              href={profile.cvPath}
-              download
-              className="inline-flex items-center gap-2 border border-accent bg-accent/90 px-4 py-2.5 font-mono text-[0.65rem] font-bold uppercase tracking-[0.12em] text-offwhite transition hover:-translate-y-0.5 hover:bg-transparent hover:text-accent hover:shadow-accent-glow"
-            >
-              <Download className="h-3.5 w-3.5" />
-              <span>Download CV</span>
-            </a>
             <a
               href={profile.linkedin}
               target="_blank"
